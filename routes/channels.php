@@ -11,12 +11,11 @@ use Illuminate\Support\Facades\Broadcast;
 | application supports. The given channel authorization callbacks are
 | used to check if an authenticated user can listen to the channel.
 |
- */
+*/
 
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
-
-Broadcast::channel('private-chat-app', function ($user, $id) {
-    return Auth::check();
+Broadcast::channel('chat-app', function ($user) {
+    return Auth::check() ? ['id' => $user->id, 'name' => $user->name] : false;
 });

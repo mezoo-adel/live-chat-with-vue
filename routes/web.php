@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,7 +13,7 @@ use App\Http\Controllers\ChatController;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
-*/
+ */
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,7 +23,7 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::group(['prefix' => 'chat','middleware'=>'auth:sanctum'], function () {
+Route::group(['prefix' => 'chat', 'middleware' => 'auth'], function () {
     Route::get('/', function () {
         return view('chat');
     })->name('chat');
@@ -32,6 +33,11 @@ Route::group(['prefix' => 'chat','middleware'=>'auth:sanctum'], function () {
 
 });
 Route::post('/broadcasting/auth', function () {
-    return Auth::check() ?  ['id'=>Auth::user()->id, 'name'=>Auth::user()->name] : abort(401);
+    if (Auth::check()) {
+        $user = Auth::user();
+        $token = DB::table('personal_access_tokens')->where('tokenable_id',$user->id)->get('token')->first()->token ;
+        return ['id' => $user->id, 'name' => $user->name, 'token' => $token];
+    } else {
+        abort(401);
+    }
 });
-
