@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\MessageSentEvent;
-use App\Models\ChatMessage;
-use App\Models\ChatRoom;
+use App\Models\ChatMessage,ChatRoom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +15,7 @@ class ChatController extends Controller
     }
     public function getMessages($roomId)
     {
-        return ChatMessage::where('room_id',$roomId)->with(['user'])->get();
+        return ChatMessage::where('room_id', $roomId)->with(['user'])->get();
     }
     public function postMessage(Request $request, $roomId)
     {
@@ -28,9 +27,9 @@ class ChatController extends Controller
         $newMessage->room_id = $roomId;
         $newMessage->message = $request->message;
         $newMessage->save();
-        $user = \App\Models\User::find(  Auth::id());
+        $user = \App\Models\User::find(Auth::id());
 
-        broadcast(new MessageSentEvent( $user,  $newMessage))->toOthers();
+        broadcast(new MessageSentEvent($user, $newMessage))->toOthers();
         return $newMessage;
 
     }

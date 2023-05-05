@@ -23,7 +23,7 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::group(['prefix' => 'chat', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'chat', 'middleware' => 'auth:sanctum'], function () {
     Route::get('/', function () {
         return view('chat');
     })->name('chat');
@@ -31,13 +31,4 @@ Route::group(['prefix' => 'chat', 'middleware' => 'auth'], function () {
     Route::get('/room/{roomId}/messages', [ChatController::class, 'getMessages'])->name('messages');
     Route::post('/room/{roomId}/messages', [ChatController::class, 'postMessage'])->name('new_message');
 
-});
-Route::post('/broadcasting/auth', function () {
-    if (Auth::check()) {
-        $user = Auth::user();
-        $token = DB::table('personal_access_tokens')->where('tokenable_id',$user->id)->get('token')->first()->token ;
-        return ['id' => $user->id, 'name' => $user->name, 'token' => $token];
-    } else {
-        abort(401);
-    }
 });

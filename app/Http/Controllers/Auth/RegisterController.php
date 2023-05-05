@@ -70,7 +70,7 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
         $user->save();
-        $user->remember_token = $user->createToken($user->email)->plainTextToken;
+       $user->createToken($user->email)->plainTextToken;
         return $user;
     }
 }

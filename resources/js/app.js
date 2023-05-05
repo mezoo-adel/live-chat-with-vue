@@ -34,18 +34,22 @@ const app = createApp({
         this.fetchMessages();
 
         Pusher.logToConsole = true;
+        let pusher = new Pusher(
+            import.meta.env.VITE_PUSHER_APP_KEY, {
+                cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+                authEndpoint: '/broadcasting/auth',
+            });
 
-        window.Echo.private('chat-app')
-        .listen('message-created', (e) => {
+        let channel = pusher.subscribe('private-chat-app');
+        channel.bind('message.created', (data) => {
+
             console.log('Message created from ECHO:', data);
-            alert(data);
+            // alert(JSON.stringify(data));
             this.messages.push({
                 message: data.message.message,
                 user: data.user
             });
         });
-
-
     },
     methods: {
         fetchMessages() {
@@ -58,10 +62,16 @@ const app = createApp({
         //Receives the message that was emitted from the ChatForm Vue component
         addMessage(message) {
             //Pushes it to the messages array
-            this.messages.push(message);
+            // this.messages.push(message);
+            if (!message.message) {
+                return
+            }
+            let saveBtn= document.querySelector("#btn-chat");
+            saveBtn.classList.add('button--loading');
             //POST request to the messages route with the message data in order for our Laravel server to broadcast it.
             axios.post(`/chat/room/${this.roomId}/messages`, message).then(response => {
                 console.log(response.data);
+                saveBtn.classList.remove('button--loading');
             }).catch((e) => console.log(e.response.data.message));
         }
     },

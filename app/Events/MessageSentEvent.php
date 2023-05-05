@@ -39,7 +39,7 @@ class MessageSentEvent implements ShouldBroadcast
     }
     public function broadcastAs(): string
     {
-        return 'message-created';
+        return 'message.created';
     }
 
 }
