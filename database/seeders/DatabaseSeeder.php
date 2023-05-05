@@ -14,11 +14,14 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        \App\Models\User::create([
-            'name' => 'Test User',
+        \App\Models\User::upsert([
+            [  'name' => 'Test User',
             'email' => 'test@example.com',
-            'password'=>\Illuminate\Support\Facades\Hash::make('P@ssw0rd')
-        ]);
+            'password'=>\Illuminate\Support\Facades\Hash::make('P@ssw0rd')],
+            [  'name' => 'Test User 2',
+            'email' => 'test@second_example.com',
+            'password'=>\Illuminate\Support\Facades\Hash::make('P@ssw0rd')]
+        ],['email']);
         $this->call(ChatRoomSeeder::class);
         $this->call(ChatMessageSeeder::class);
     }
