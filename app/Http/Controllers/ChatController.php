@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\MessageSentEvent;
-use App\Models\ChatMessage,ChatRoom;
+use App\Models\{ChatMessage,ChatRoom};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,6 +30,7 @@ class ChatController extends Controller
         $user = \App\Models\User::find(Auth::id());
 
         broadcast(new MessageSentEvent($user, $newMessage))->toOthers();
+
         return $newMessage;
 
     }

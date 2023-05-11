@@ -23,7 +23,7 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::group(['prefix' => 'chat', 'middleware' => 'auth:sanctum'], function () {
+Route::group(['prefix' => 'chat', 'middleware' => 'auth'], function () {
     Route::get('/', function () {
         return view('chat');
     })->name('chat');
