@@ -14,12 +14,12 @@ import {
  * registering components with the application instance so they are ready
  * to use in your application's views. An example is included for you.
  */
-import ExampleComponent from './components/ExampleComponent.vue';
+import WelcomeComponent from './components/ExampleComponent.vue';
 import ChatForm from './components/ChatForm.vue';
 
 const app = createApp({
     components: {
-        ExampleComponent,
+       WelcomeComponent,
         ChatForm
     },
 });

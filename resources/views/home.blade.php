@@ -14,11 +14,23 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    @if (Auth::user()->hasRole(['admin','super_admin']))
+                    <a class="dropdown-item text-primary" href="/dashboard" >
+                      Open the dashboard here
+                    </a>
+                    @else
+                    <p class="dropdown-item text-warning">
+                        You aren't the admin
+                      </p>
+                    @endif
                 </div>
             </div>
         </div>
-        <example-component class="mt-3"></example-component>
+        <welcome-component class="mt-3">
+            <a class="dropdown-item text-primary" href="/chat" >
+           Chat room
+          </a>
+        </welcome-component>
     </div>
 </div>
 @endsection

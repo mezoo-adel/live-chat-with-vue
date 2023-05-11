@@ -6,9 +6,11 @@
                     <strong>
                         {{ message.user.name }}
                     </strong>
-                    {{  new Date(message.created_at).toLocaleString()  }}
+                    <p class="text-muted">
+                        {{  new Date(message.created_at).toLocaleString()  }}
+                    </p>
                 </div>
-                <p>
+                <p class="lead">
                     {{ message.message }}
                 </p>
             </div>
