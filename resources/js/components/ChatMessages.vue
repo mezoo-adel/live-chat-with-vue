@@ -7,7 +7,7 @@
                         {{ message.user.name }}
                     </strong>
                     <p class="text-muted">
-                        {{  new Date(message.created_at).toLocaleString()  }}
+                        {{  new Date(message.created_at || new Date()).toLocaleString()  }}
                     </p>
                 </div>
                 <p class="lead">
